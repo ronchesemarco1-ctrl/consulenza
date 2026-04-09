@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consulenza Assicurativa</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F0EDE8;--surface:#FAFAF8;--surface-2:#F4F1EC;
+  --ink:#1A1612;--ink-mid:#3D3830;--ink-light:#6B6358;--ink-faint:#A09890;
+  --blue:#1E4A8C;--blue-dim:rgba(30,74,140,0.08);--blue-border:rgba(30,74,140,0.22);
+  --border:rgba(26,22,18,0.10);--border-mid:rgba(26,22,18,0.16);
+  --radius:14px;--shadow:0 4px 24px rgba(26,22,18,0.10);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+
+.logo-area{display:flex;align-items:center;gap:12px;margin-bottom:48px;}
+.logo-mark{width:40px;height:40px;border:1.5px solid var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--blue);}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--ink);}
+.logo-sub{font-size:9px;color:var(--ink-faint);letter-spacing:2px;text-transform:uppercase;margin-top:1px;}
+
+.cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;width:100%;max-width:680px;}
+
+.card{
+  flex:1;min-width:260px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:32px 28px;
+  box-shadow:var(--shadow);
+  display:flex;flex-direction:column;gap:12px;
+  text-decoration:none;color:var(--ink);
+  transition:transform .2s, box-shadow .2s, border-color .2s;
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(26,22,18,0.13);border-color:var(--blue-border);}
+
+.card-icon{font-size:32px;margin-bottom:4px;}
+.card-label{font-size:9.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:2px;}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink);}
+.card-desc{font-size:13px;color:var(--ink-light);line-height:1.6;}
+
+.card-btn{
+  margin-top:8px;padding:11px 20px;
+  border-radius:9px;font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:600;text-align:center;
+  transition:opacity .2s;
+}
+.card.blue .card-btn{background:var(--blue);color:#fff;}
+.card.outline .card-btn{background:transparent;color:var(--blue);border:1.5px solid var(--blue-border);}
+.card:hover .card-btn{opacity:.88;}
+
+/* Link copiabile */
+.link-box{
+  width:100%;max-width:680px;margin-top:32px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px 24px;
+  box-shadow:var(--shadow);
+}
+.link-box-title{font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px;}
+.link-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.link-row:last-child{margin-bottom:0;}
+.link-label{font-size:11.5px;font-weight:600;color:var(--ink-light);width:100px;flex-shrink:0;}
+.link-val{flex:1;font-size:12px;color:var(--blue);background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 12px;font-family:monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.copy-btn{padding:7px 12px;background:var(--blue);color:#fff;border:none;border-radius:7px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:opacity .2s;flex-shrink:0;}
+.copy-btn:hover{opacity:.88;}
+.copy-btn.copied{background:#1e7a45;}
+
+.footer{margin-top:36px;font-size:11px;color:var(--ink-faint);}
+
+@media(max-width:580px){
+  .cards{flex-direction:column;}
+  .link-row{flex-wrap:wrap;}
+  .link-val{width:100%;}
+}
+</style>
+</head>
+<body>
+
+<div class="logo-area">
+  <div class="logo-mark">CA</div>
+  <div>
+    <div class="logo-text">Consulenza Assicurativa</div>
+    <div class="logo-sub">Pannello di controllo</div>
+  </div>
+</div>
+
+<div class="cards">
+  <a class="card blue" href="questionario.html">
+    <div class="card-icon">📋</div>
+    <div>
+      <div class="card-label">Per il cliente</div>
+      <div class="card-title">Questionario</div>
+    </div>
+    <div class="card-desc">Link da inviare al cliente via WhatsApp. Compila le domande in circa 3 minuti.</div>
+    <div class="card-btn">Apri questionario →</div>
+  </a>
+
+  <a class="card outline" href="dashboard.html">
+    <div class="card-icon">📊</div>
+    <div>
+      <div class="card-label">Solo consulente</div>
+      <div class="card-title">Dashboard</div>
+    </div>
+    <div class="card-desc">Visualizza tutti i clienti, le esigenze rilevate dall'AI e le note per l'appuntamento.</div>
+    <div class="card-btn">Apri dashboard →</div>
+  </a>
+</div>
+
+<!-- Box con link copiabili -->
+<div class="link-box">
+  <div class="link-box-title">Link da usare e condividere</div>
+
+  <div class="link-row">
+    <span class="link-label">Questionario</span>
+    <span class="link-val" id="linkQ">—</span>
+    <button class="copy-btn" onclick="copyLink('linkQ',this)">Copia</button>
+  </div>
+  <div class="link-row">
+    <span class="link-label">Dashboard</span>
+    <span class="link-val" id="linkD">—</span>
+    <button class="copy-btn" onclick="copyLink('linkD',this)">Copia</button>
+  </div>
+</div>
+
+<div class="footer">Dati trattati con riservatezza · GDPR · Riservato al consulente</div>
+
+<script>
+// Calcola i link automaticamente in base all'URL corrente
+(function(){
+  const base = window.location.origin + window.location.pathname.replace('index.html','').replace(/\/$/,'') ;
+  document.getElementById('linkQ').textContent = base + '/questionario.html';
+  document.getElementById('linkD').textContent = base + '/dashboard.html';
+})();
+
+function copyLink(id, btn){
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard?.writeText(text).then(()=>{
+    btn.textContent = '✓ Copiato';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='Copia'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Consulente</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F0EDE8;--surface:#FAFAF8;--surface-2:#F4F1EC;
+  --ink:#1A1612;--ink-mid:#3D3830;--ink-light:#6B6358;--ink-faint:#A09890;
+  --blue:#1E4A8C;--blue-dim:rgba(30,74,140,0.08);--blue-border:rgba(30,74,140,0.22);
+  --border:rgba(26,22,18,0.10);--border-mid:rgba(26,22,18,0.16);
+  --danger:#9B3A2A;--danger-dim:rgba(155,58,42,0.08);
+  --warn:#8C5E1A;--warn-dim:rgba(140,94,26,0.08);
+  --info:#1E4A8C;--info-dim:rgba(30,74,140,0.08);
+  --green:#1e7a45;--green-dim:rgba(30,122,69,0.09);
+  --radius:12px;--shadow-sm:0 1px 4px rgba(26,22,18,0.07);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;color:var(--ink);}
+
+/* ── SETUP ── */
+#setupOverlay{position:fixed;inset:0;background:rgba(15,12,8,0.55);backdrop-filter:blur(6px);z-index:999;display:none;align-items:center;justify-content:center;padding:20px;}
+#setupOverlay.show{display:flex;}
+.setup-box{background:var(--surface);border-radius:18px;padding:36px 40px;width:100%;max-width:500px;box-shadow:0 24px 60px rgba(0,0,0,0.18);}
+.setup-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.setup-logo-mark{width:32px;height:32px;border:1.5px solid var(--blue);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--blue);}
+.setup-logo-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--ink);}
+.setup-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:var(--ink);margin-bottom:6px;}
+.setup-sub{font-size:13px;color:var(--ink-light);margin-bottom:24px;line-height:1.6;}
+.setup-field{margin-bottom:14px;}
+.setup-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px;display:block;}
+.setup-input{width:100%;padding:11px 14px;border:1.5px solid var(--border-mid);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s;}
+.setup-input:focus{border-color:var(--blue);}
+.setup-input::placeholder{color:var(--ink-faint);}
+.setup-hint{font-size:11px;color:var(--ink-faint);margin-top:4px;line-height:1.5;}
+.setup-sep{height:1px;background:var(--border);margin:16px 0;}
+.setup-btn{width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;transition:opacity .2s;}
+.setup-btn:hover{opacity:.9;}
+.setup-err{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:10px 14px;font-size:12px;color:#991b1b;margin-top:10px;display:none;line-height:1.5;}
+.setup-testing{display:none;align-items:center;gap:8px;font-size:13px;color:var(--ink-light);margin-top:10px;}
+.setup-testing.show{display:flex;}
+.spin{width:14px;height:14px;border:2px solid var(--border-mid);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── HEADER ── */
+.d-header{background:var(--surface);border-bottom:1px solid var(--border);padding:18px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo-area{display:flex;align-items:center;gap:12px;}
+.logo-mark{width:34px;height:34px;border:1.5px solid var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--blue);}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--ink);}
+.logo-sub{font-size:9px;color:var(--ink-faint);letter-spacing:2px;text-transform:uppercase;margin-top:1px;}
+.header-right{display:flex;align-items:center;gap:8px;}
+.ai-status{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-faint);padding:6px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:20px;}
+.ai-dot{width:7px;height:7px;border-radius:50%;background:var(--ink-faint);}
+.ai-dot.running{background:#f59e0b;animation:pulse 1s ease infinite;}
+.ai-dot.done{background:var(--green);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.btn-sm{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:5px;border:none;}
+.btn-primary{background:var(--blue);color:#fff;}
+.btn-primary:hover{opacity:.9;}
+.btn-outline{background:transparent;color:var(--ink-light);border:1.5px solid var(--border-mid)!important;}
+.btn-outline:hover{border-color:var(--blue)!important;color:var(--blue);}
+.btn-ghost{background:transparent;color:var(--ink-faint);border:none;font-size:14px;cursor:pointer;padding:6px 8px;}
+.btn-ghost:hover{color:var(--blue);}
+
+/* ── STATS ── */
+.stats-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 40px;display:flex;gap:32px;flex-wrap:wrap;}
+.stat{display:flex;flex-direction:column;}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:var(--ink);line-height:1;}
+.stat-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--ink-faint);margin-top:3px;font-weight:600;}
+
+/* ── TOOLBAR ── */
+.toolbar{padding:12px 40px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:var(--surface);}
+.filter-btn{padding:6px 13px;border-radius:20px;font-size:11.5px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .18s;border:1.5px solid var(--border-mid);background:transparent;color:var(--ink-light);}
+.filter-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.filter-btn:hover:not(.active){border-color:var(--blue);color:var(--blue);}
+.spacer{flex:1;}
+.search-input{padding:7px 13px;border:1.5px solid var(--border-mid);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);background:var(--bg);outline:none;width:200px;transition:border-color .2s;}
+.search-input:focus{border-color:var(--blue);}
+
+/* ── LAYOUT ── */
+.d-body{display:flex;height:calc(100vh - 148px);}
+.client-list{width:310px;flex-shrink:0;border-right:1px solid var(--border);overflow-y:auto;background:var(--surface);}
+.client-list::-webkit-scrollbar{width:3px;}
+.client-list::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:2px;}
+.client-item{padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;display:flex;align-items:flex-start;gap:9px;position:relative;}
+.client-item:hover{background:var(--surface-2);}
+.client-item.active{background:var(--blue-dim);border-left:3px solid var(--blue);}
+.ci-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+.ci-dot.nuovo{background:#22c55e;}
+.ci-dot.visto{background:#f59e0b;}
+.ci-dot.archiviato{background:var(--ink-faint);}
+.ci-body{flex:1;min-width:0;}
+.ci-name{font-weight:600;font-size:13.5px;color:var(--ink);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ci-meta{font-size:11px;color:var(--ink-faint);display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
+.ci-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.6px;}
+.ci-tag.alta{background:var(--danger-dim);color:var(--danger);}
+.ci-tag.media{background:var(--warn-dim);color:var(--warn);}
+.ci-tag.bassa{background:var(--info-dim);color:var(--info);}
+.ci-tag.pending{background:var(--green-dim);color:var(--green);}
+.ci-tag.area-casa{background:rgba(140,94,26,0.10);color:#7a5010;}
+.ci-tag.area-salute{background:rgba(155,58,42,0.10);color:#9B3A2A;}
+.ci-tag.area-non_autosufficienza{background:rgba(30,74,140,0.10);color:#1E4A8C;}
+.ci-tag.area-premorienza{background:rgba(155,58,100,0.10);color:#8C1E4A;}
+.ci-time{font-size:9.5px;color:var(--ink-faint);position:absolute;top:13px;right:13px;}
+.empty-list{padding:48px 20px;text-align:center;color:var(--ink-faint);}
+.empty-list .ei{font-size:32px;margin-bottom:10px;}
+.empty-list p{font-size:13px;line-height:1.6;}
+
+/* ── DETAIL ── */
+.detail-panel{flex:1;overflow-y:auto;padding:30px 38px;}
+.detail-panel::-webkit-scrollbar{width:3px;}
+.detail-panel::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:2px;}
+.detail-empty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink-faint);text-align:center;}
+.detail-empty-icon{font-size:44px;margin-bottom:14px;opacity:.35;}
+.d-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:26px;flex-wrap:wrap;gap:12px;}
+.d-eyebrow{font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:5px;}
+.d-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:var(--ink);}
+.d-date{font-size:11px;color:var(--ink-faint);margin-top:3px;}
+.status-sel{padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;border:1.5px solid var(--border-mid);background:transparent;color:var(--ink-mid);outline:none;}
+.sec-label{font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:11px;}
+.profile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:7px;margin-bottom:22px;}
+.profile-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px;box-shadow:var(--shadow-sm);}
+.p-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--ink-faint);margin-bottom:4px;font-weight:600;}
+.p-value{font-size:12.5px;color:var(--ink);font-weight:500;line-height:1.3;}
+.divider{height:1px;background:var(--border);margin:20px 0;}
+.need-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:8px;display:flex;align-items:flex-start;gap:13px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
+.need-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.need-card.alta::before{background:var(--danger);}
+.need-card.media::before{background:var(--warn);}
+.need-card.bassa::before{background:var(--info);}
+.need-icon-wrap{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.alta .need-icon-wrap{background:var(--danger-dim);}
+.media .need-icon-wrap{background:var(--warn-dim);}
+.bassa .need-icon-wrap{background:var(--info-dim);}
+.need-content{flex:1;}
+.need-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
+.need-title{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--ink);}
+.prio-tag{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;}
+.alta .prio-tag{background:var(--danger-dim);color:var(--danger);}
+.media .prio-tag{background:var(--warn-dim);color:var(--warn);}
+.bassa .prio-tag{background:var(--info-dim);color:var(--info);}
+.need-desc{font-size:12.5px;color:var(--ink-light);line-height:1.6;margin-bottom:7px;}
+.need-action{font-size:11px;color:var(--blue);font-weight:600;}
+.need-action::before{content:'→  ';}
+.ai-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow-sm);margin-bottom:20px;}
+.ai-panel-label{font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:11px;}
+.ai-text{font-size:13px;color:var(--ink-mid);line-height:1.8;margin-bottom:14px;}
+.opening-box{background:var(--surface-2);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:11px 15px;}
+.opening-label{font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:5px;font-weight:600;}
+.opening-text{font-family:'Cormorant Garamond',serif;font-size:16.5px;font-style:italic;color:var(--ink);line-height:1.5;}
+.ai-pending{background:var(--green-dim);border:1px solid rgba(30,122,69,0.2);border-radius:var(--radius);padding:16px 18px;display:flex;align-items:center;gap:11px;margin-bottom:20px;}
+.ai-pending p{font-size:13px;color:var(--green);}
+.note-area{width:100%;min-height:76px;padding:11px 14px;border:1.5px solid var(--border-mid);border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);background:var(--surface);resize:vertical;outline:none;transition:border-color .2s;line-height:1.6;}
+.note-area:focus{border-color:var(--blue);}
+.note-area::placeholder{color:var(--ink-faint);}
+.note-row{display:flex;align-items:center;gap:10px;margin-top:8px;}
+.note-save-btn{padding:8px 16px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .2s;}
+.note-save-btn:hover{opacity:.9;}
+.note-saved{font-size:11px;color:var(--green);display:none;}
+.spin-lg{width:22px;height:22px;border:2px solid var(--border-mid);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;}
+#loadingOverlay{position:fixed;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:90;}
+#loadingOverlay p{font-size:13.5px;color:var(--ink-faint);}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeSlide .3s ease both;}
+@media(max-width:760px){
+  .client-list{width:100%;border-right:none;border-bottom:1px solid var(--border);height:250px;}
+  .d-body{flex-direction:column;height:auto;}
+  .d-header,.stats-bar,.toolbar,.detail-panel{padding-left:18px;padding-right:18px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ SETUP ══ -->
+<div id="setupOverlay">
+  <div class="setup-box">
+    <div class="setup-logo">
+      <div class="setup-logo-mark">CA</div>
+      <div class="setup-logo-text">Dashboard Consulente</div>
+    </div>
+    <div class="setup-title">Configurazione credenziali</div>
+    <div class="setup-sub">Inserisci le credenziali una sola volta. Vengono salvate su questo browser.</div>
+    <div class="setup-field">
+      <label class="setup-label">Supabase Project URL</label>
+      <input class="setup-input" id="inp-url" placeholder="https://xxxxxxxxxxxx.supabase.co" autocomplete="off" spellcheck="false"/>
+      <div class="setup-hint">Supabase → Project Settings → API → Project URL</div>
+    </div>
+    <div class="setup-field">
+      <label class="setup-label">Supabase Anon Key</label>
+      <input class="setup-input" id="inp-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." autocomplete="off" spellcheck="false"/>
+      <div class="setup-hint">Supabase → Project Settings → API → anon public</div>
+    </div>
+    <div class="setup-sep"></div>
+    <div class="setup-field">
+      <label class="setup-label">Chiave API Claude</label>
+      <input class="setup-input" id="inp-claude" placeholder="sk-ant-api03-..." autocomplete="off" spellcheck="false"/>
+      <div class="setup-hint">console.anthropic.com → API Keys → Create Key</div>
+    </div>
+    <button class="setup-btn" onclick="saveSetup()">Verifica e accedi</button>
+    <div class="setup-err" id="setupErr"></div>
+    <div class="setup-testing" id="setupTesting"><div class="spin"></div><span>Verifica connessione Supabase…</span></div>
+  </div>
+</div>
+
+<!-- ══ LOADING ══ -->
+<div id="loadingOverlay">
+  <div class="spin-lg"></div>
+  <p>Caricamento clienti…</p>
+</div>
+
+<!-- ══ HEADER ══ -->
+<header class="d-header">
+  <div class="logo-area">
+    <div class="logo-mark">CA</div>
+    <div><div class="logo-text">Dashboard Consulente</div><div class="logo-sub">Gestione Clienti</div></div>
+  </div>
+  <div class="header-right">
+    <div class="ai-status" id="aiStatus"><span class="ai-dot" id="aiDot"></span><span id="aiStatusText">—</span></div>
+    <button class="btn-sm btn-outline" onclick="exportCSV()">⬇ CSV</button>
+    <button class="btn-sm btn-primary" onclick="loadClients()">↻ Aggiorna</button>
+    <button class="btn-ghost" onclick="resetSetup()" title="Modifica credenziali">⚙</button>
+  </div>
+</header>
+
+<!-- ══ STATS ══ -->
+<div class="stats-bar">
+  <div class="stat"><span class="stat-num" id="sTot">—</span><span class="stat-label">Totale</span></div>
+  <div class="stat"><span class="stat-num" id="sNew">—</span><span class="stat-label">Nuovi</span></div>
+  <div class="stat"><span class="stat-num" id="sCasa">—</span><span class="stat-label">🏠 Casa</span></div>
+  <div class="stat"><span class="stat-num" id="sSalute">—</span><span class="stat-label">🏥 Salute / Infortuni</span></div>
+  <div class="stat"><span class="stat-num" id="sNAS">—</span><span class="stat-label">♿ Non Autosuff.</span></div>
+  <div class="stat"><span class="stat-num" id="sPrem">—</span><span class="stat-label">💔 Premorienza</span></div>
+  <div class="stat"><span class="stat-num" id="sPend">—</span><span class="stat-label">Da Analizzare</span></div>
+</div>
+
+<!-- ══ TOOLBAR ══ -->
+<div class="toolbar">
+  <button class="filter-btn active" onclick="setFilter(this,'tutti')">Tutti</button>
+  <button class="filter-btn" onclick="setFilter(this,'nuovo')">Nuovi</button>
+  <button class="filter-btn" onclick="setFilter(this,'casa')">🏠 Casa</button>
+  <button class="filter-btn" onclick="setFilter(this,'salute')">🏥 Salute / Infortuni</button>
+  <button class="filter-btn" onclick="setFilter(this,'non_autosufficienza')">♿ Non Autosuff.</button>
+  <button class="filter-btn" onclick="setFilter(this,'premorienza')">💔 Premorienza</button>
+  <button class="filter-btn" onclick="setFilter(this,'multi')">⚡ Più aree</button>
+  <div class="spacer"></div>
+  <input class="search-input" id="searchInput" placeholder="Cerca per nome…" oninput="applyFilters()">
+</div>
+
+<!-- ══ BODY ══ -->
+<div class="d-body">
+  <div class="client-list" id="clientList"><div class="empty-list"><div class="ei">📋</div><p>Nessun cliente ancora.</p></div></div>
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-empty"><div class="detail-empty-icon">👈</div><p>Seleziona un cliente</p></div>
+  </div>
+</div>
+
+<script>
+const LABELS={nome:'Nome',cognome:'Cognome',eta:'Fascia d\'età',professione:'Condizione professionale',famiglia:'Familiari a carico',patrimonio:'Patrimonio immobiliare',casa_protezione:'Protezione immobile',salute:'Stato di salute',reddito:'Copertura reddito/famiglia',premorienza:'Premorienza',autosufficienza:'Non autosufficienza',coperture:'Coperture assicurative',priorita:'Priorità di protezione',budget:'Budget mensile'};
+
+/* ══ CONFIG ══ */
+function getCfg(){return{url:localStorage.getItem('ca_supabase_url')||'',key:localStorage.getItem('ca_supabase_key')||'',claude:localStorage.getItem('ca_claude_key')||''};}
+
+async function saveSetup(){
+  const url=document.getElementById('inp-url').value.trim().replace(/\/$/,'');
+  const key=document.getElementById('inp-key').value.trim();
+  const claude=document.getElementById('inp-claude').value.trim();
+  const err=document.getElementById('setupErr'),tst=document.getElementById('setupTesting');
+  err.style.display='none';
+  if(!url.startsWith('https://')||!url.includes('supabase')){err.textContent='URL non valido.';err.style.display='block';return;}
+  if(!key.startsWith('eyJ')){err.textContent='Anon Key non valida. Deve iniziare con eyJ…';err.style.display='block';return;}
+  if(!claude.startsWith('sk-ant')){err.textContent='Chiave Claude non valida. Deve iniziare con sk-ant-…';err.style.display='block';return;}
+  tst.classList.add('show');
+  try{
+    const r=await fetch(`${url}/rest/v1/clienti?select=id&limit=1`,{headers:{'apikey':key,'Authorization':`Bearer ${key}`}});
+    if(!r.ok&&r.status!==406) throw new Error(`HTTP ${r.status} — verifica URL, chiave e che la tabella "clienti" esista`);
+  }catch(e){tst.classList.remove('show');err.textContent=e.message;err.style.display='block';return;}
+  tst.classList.remove('show');
+  localStorage.setItem('ca_supabase_url',url);
+  localStorage.setItem('ca_supabase_key',key);
+  localStorage.setItem('ca_claude_key',claude);
+  document.getElementById('setupOverlay').classList.remove('show');
+  startApp();
+}
+
+function resetSetup(){
+  const cfg=getCfg();
+  document.getElementById('inp-url').value=cfg.url;
+  document.getElementById('inp-key').value=cfg.key;
+  document.getElementById('inp-claude').value=cfg.claude;
+  document.getElementById('setupErr').style.display='none';
+  document.getElementById('setupOverlay').classList.add('show');
+}
+
+/* ══ STATE ══ */
+let allClients=[],currentFilter='tutti',selectedId=null,aiQueue=[],aiRunning=false;
+
+function startApp(){
+  document.getElementById('loadingOverlay').style.display='flex';
+  loadClients();
+  setInterval(loadClients,60000);
+}
+
+async function loadClients(){
+  const cfg=getCfg();
+  try{
+    const r=await fetch(`${cfg.url}/rest/v1/clienti?select=*&order=created_at.desc`,{headers:{'apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`}});
+    const data=await r.json();
+    allClients=Array.isArray(data)?data:[];
+    updateStats();applyFilters();scheduleAI();
+  }catch(e){
+    document.getElementById('clientList').innerHTML='<div class="empty-list"><div class="ei">⚠️</div><p>Errore connessione.<br>Clicca ⚙ per verificare le credenziali.</p></div>';
+  }finally{
+    document.getElementById('loadingOverlay').style.display='none';
+  }
+}
+
+/* ══ CLASSIFICAZIONE BASATA SULLE RISPOSTE ══ */
+function getAree(c){
+  const aree=new Set();
+  // CASA: ha immobili di proprietà O priorità tutela patrimonio immobiliare
+  if(c.patrimonio&&(c.patrimonio.includes('prima casa')||c.patrimonio.includes('più immobili')))
+    aree.add('casa');
+  if(c.priorita&&c.priorita.includes('patrimonio immobiliare'))
+    aree.add('casa');
+  // SALUTE / INFORTUNI: copertura reddito parziale/nulla, problemi di salute, priorità reddito, premorienza
+  if(c.reddito&&(c.reddito.includes('parziale')||c.reddito.includes('Nessuna')||c.reddito.includes('certo')))
+    aree.add('salute');
+  if(c.salute&&(c.salute.includes('lievi')||c.salute.includes('croniche')||c.salute.includes('patologie')))
+    aree.add('salute');
+  if(c.priorita&&c.priorita.includes('reddito'))
+    aree.add('salute');
+
+  // NON AUTOSUFFICIENZA: preoccupazione concreta o familiare non autosufficiente
+  if(c.autosufficienza&&(c.autosufficienza.includes('preoccupazione')||c.autosufficienza.includes('familiare non')))
+    aree.add('non_autosufficienza');
+  if(c.priorita&&c.priorita.includes('autosufficienza'))
+    aree.add('non_autosufficienza');
+  // PREMORIENZA: famiglia non tutelata o parzialmente, o priorità premorienza
+  if(c.premorienza&&(c.premorienza.includes('Parzialmente')||c.premorienza.includes('difficoltà')||c.premorienza.includes('mai considerato')))
+    aree.add('premorienza');
+  if(c.priorita&&c.priorita.includes('premorienza'))
+    aree.add('premorienza');
+  return aree;
+}
+
+function updateStats(){
+  document.getElementById('sTot').textContent =allClients.length;
+  document.getElementById('sNew').textContent =allClients.filter(c=>c.stato==='nuovo').length;
+  document.getElementById('sCasa').textContent   =allClients.filter(c=>getAree(c).has('casa')).length;
+  document.getElementById('sSalute').textContent =allClients.filter(c=>getAree(c).has('salute')).length;
+  document.getElementById('sNAS').textContent    =allClients.filter(c=>getAree(c).has('non_autosufficienza')).length;
+  document.getElementById('sPrem').textContent   =allClients.filter(c=>getAree(c).has('premorienza')).length;
+  document.getElementById('sPend').textContent   =allClients.filter(c=>!c.ai_analizzato).length;
+}
+
+/* ══ AI ══ */
+function scheduleAI(){
+  const cfg=getCfg();
+  if(!cfg.claude||!cfg.claude.startsWith('sk-ant')) return;
+  allClients.filter(c=>!c.ai_analizzato).forEach(c=>{if(!aiQueue.includes(c.id))aiQueue.push(c.id);});
+  if(!aiRunning&&aiQueue.length) processAIQueue();
+  else if(!aiQueue.length) setAIStatus('done','Tutti analizzati');
+}
+
+async function processAIQueue(){
+  if(!aiQueue.length){aiRunning=false;setAIStatus('done','Tutti analizzati');updateStats();applyFilters();return;}
+  aiRunning=true;
+  const id=aiQueue.shift();
+  const c=allClients.find(x=>x.id===id);
+  if(!c||c.ai_analizzato){processAIQueue();return;}
+  setAIStatus('running',`Analisi in corso… (${aiQueue.length+1} rimasti)`);
+  try{
+    const result=await analyzeClient(c);
+    if(result){
+      const patch={ai_esigenze:JSON.stringify(result.esigenze),ai_sintesi:result.sintesi,ai_apertura:result.apertura,priorita_principale:result.esigenze?.[0]?.priorita||null,tipo_principale:result.esigenze?.[0]?.tipo||null,ai_analizzato:true};
+      await supabasePatch(id,patch);
+      Object.assign(c,patch);
+      if(id===selectedId) renderDetail(c);
+      applyFilters();updateStats();
+    }
+  }catch(e){console.error('AI error',id,e);}
+  setTimeout(processAIQueue,800);
+}
+
+async function analyzeClient(c){
+  const cfg=getCfg();
+  const nome_completo=`${c.nome||''} ${c.cognome||''}`.trim();
+  const profile=Object.entries(LABELS).filter(([k])=>!['nome','cognome'].includes(k)).map(([k,l])=>c[k]?`${l}: ${c[k]}`:'').filter(Boolean).join('\n');
+
+  // Prompt costruito come stringa separata per evitare problemi di escape
+  const promptParts=[
+    'Sei un analista assicurativo senior italiano.',
+    'Analizza il profilo di ' + (nome_completo||'questo cliente') + ' e restituisci SOLO un oggetto JSON valido, senza markdown, senza backtick, senza testo aggiuntivo prima o dopo.',
+    '',
+    'Struttura richiesta:',
+    '{"esigenze":[{"tipo":"infortuni_malattia o casa o non_autosufficienza o premorienza","titolo":"max 5 parole","priorita":"alta o media o bassa","emoji":"una emoji","descrizione":"1-2 frasi professionali","azione":"indicazione operativa per il consulente"}],"sintesi":"2-3 frasi profilo sintetico","apertura":"Frase formale apertura in seconda persona Lei"}',
+    '',
+    'Profilo:',
+    profile,
+    '',
+    'Regole: 2-4 esigenze pertinenti, ordine priorita decrescente, tono formale e professionale.'
+  ];
+  const prompt = promptParts.join('\n');
+
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':cfg.claude,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,messages:[{role:'user',content:prompt}]})
+  });
+  if(!res.ok){
+    const err=await res.text();
+    console.error('API error:', res.status, err);
+    return null;
+  }
+  const data=await res.json();
+  const raw=(data.content||[]).map(i=>i.text||'').join('').replace(/```json|```/g,'').trim();
+  if(!raw) return null;
+  return JSON.parse(raw);
+}
+
+function setAIStatus(state,text){
+  document.getElementById('aiDot').className='ai-dot'+(state==='running'?' running':state==='done'?' done':'');
+  document.getElementById('aiStatusText').textContent=text;
+}
+
+/* ══ FILTER ══ */
+function setFilter(btn,filter){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');currentFilter=filter;applyFilters();
+}
+function applyFilters(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  let list=allClients.filter(c=>{
+    const aree=getAree(c);
+    if(currentFilter==='nuovo')              return c.stato==='nuovo';
+    if(currentFilter==='casa')               return aree.has('casa');
+    if(currentFilter==='salute')             return aree.has('salute');
+    if(currentFilter==='non_autosufficienza')return aree.has('non_autosufficienza');
+    if(currentFilter==='premorienza')        return aree.has('premorienza');
+    if(currentFilter==='multi')              return aree.size>1;
+    return true;
+  });
+  if(q) list=list.filter(c=>Object.values(c).some(v=>typeof v==='string'&&v.toLowerCase().includes(q)));
+  renderList(list);
+}
+
+/* ══ LIST ══ */
+function clientLabel(c){
+  if(c.nome||c.cognome) return `${c.nome||''} ${c.cognome||''}`.trim();
+  return [c.eta,c.professione].filter(Boolean).join(' · ')||`Cliente #${c.id}`;
+}
+
+const AREA_LABELS={'casa':'🏠 Casa','salute':'🏥 Salute','non_autosufficienza':'♿ Non Autosuff.','premorienza':'💔 Premorienza'};
+
+function renderList(clients){
+  const el=document.getElementById('clientList');
+  if(!clients.length){el.innerHTML='<div class="empty-list"><div class="ei">🔍</div><p>Nessun cliente<br>corrisponde ai filtri.</p></div>';return;}
+  el.innerHTML=clients.map(c=>{
+    const active=c.id===selectedId?' active':'';
+    const aree=getAree(c);
+    const areaTags=[...aree].map(a=>`<span class="ci-tag area-${a}">${AREA_LABELS[a]||a}</span>`).join('');
+    const pending=!c.ai_analizzato?'<span class="ci-tag pending">Da analizzare</span>':'';
+    return `<div class="client-item${active}" onclick="selectClient(${c.id})">
+      <span class="ci-dot ${c.stato||'nuovo'}"></span>
+      <div class="ci-body">
+        <div class="ci-name">${clientLabel(c)}</div>
+        <div class="ci-meta">
+          <span>${c.eta||'—'}</span>
+          <span>${c.professione||'—'}</span>
+          ${areaTags}
+          ${pending}
+        </div>
+      </div>
+      <span class="ci-time">${fmtDate(c.created_at)}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ══ DETAIL ══ */
+function selectClient(id){
+  selectedId=id;
+  const c=allClients.find(x=>x.id===id);if(!c) return;
+  applyFilters(); // aggiorna lista per mostrare active
+  renderDetail(c);
+  if(c.stato==='nuovo') updateStatus(id,'visto');
+}
+
+function renderDetail(c){
+  const esigenze=safeJSON(c.ai_esigenze,[]);
+  const profileHtml=Object.entries(LABELS).map(([k,l])=>c[k]?
+    `<div class="profile-item"><div class="p-label">${l}</div><div class="p-value">${c[k]}</div></div>`:''
+  ).join('');
+  const needsHtml=esigenze.length?esigenze.map(e=>`
+    <div class="need-card ${e.priorita||'bassa'}">
+      <div class="need-icon-wrap">${e.emoji||'📋'}</div>
+      <div class="need-content">
+        <div class="need-head"><span class="need-title">${e.titolo||''}</span><span class="prio-tag">${cap(e.priorita||'')}</span></div>
+        <div class="need-desc">${e.descrizione||''}</div>
+        <div class="need-action">${e.azione||''}</div>
+      </div>
+    </div>`).join('')
+    :`<div class="ai-pending"><div class="spin"></div><p>Analisi AI in coda — disponibile a breve.</p></div>`;
+  const aiHtml=c.ai_analizzato&&c.ai_sintesi
+    ?`<div class="ai-panel"><div class="ai-panel-label">Sintesi e Raccomandazioni</div><div class="ai-text">${c.ai_sintesi}</div><div class="opening-box"><div class="opening-label">Frase di apertura consigliata</div><div class="opening-text">${c.ai_apertura||'—'}</div></div></div>`
+    :`<div class="ai-pending"><div class="spin"></div><p>Sintesi AI in coda — disponibile a breve.</p></div>`;
+
+  document.getElementById('detailPanel').innerHTML=`<div class="fade-in">
+    <div class="d-top">
+      <div>
+        <div class="d-eyebrow">Profilo Cliente</div>
+        <div class="d-title">${clientLabel(c)}</div>
+        <div class="d-date">Compilato il ${fmtDate(c.created_at,true)}</div>
+      </div>
+      <select class="status-sel" onchange="updateStatus(${c.id},this.value)">
+        <option value="nuovo" ${c.stato==='nuovo'?'selected':''}>🟢 Nuovo</option>
+        <option value="visto" ${c.stato==='visto'?'selected':''}>🟡 Visto</option>
+        <option value="archiviato" ${c.stato==='archiviato'?'selected':''}>⚫ Archiviato</option>
+      </select>
+    </div>
+    <div class="sec-label">Dati Raccolti</div>
+    <div class="profile-grid">${profileHtml}</div>
+    <div class="divider"></div>
+    <div class="sec-label">Esigenze Rilevate</div>${needsHtml}
+    <div class="divider"></div>
+    <div class="sec-label">Analisi AI</div>${aiHtml}
+    <div class="divider"></div>
+    <div class="sec-label">Note Personali</div>
+    <textarea class="note-area" id="noteArea" placeholder="Note private per l'appuntamento…">${c.note||''}</textarea>
+    <div class="note-row">
+      <button class="note-save-btn" onclick="saveNote(${c.id})">Salva nota</button>
+      <span class="note-saved" id="noteSaved">✓ Salvato</span>
+    </div>
+  </div>`;
+}
+
+/* ══ ACTIONS ══ */
+async function updateStatus(id,stato){await supabasePatch(id,{stato});const c=allClients.find(x=>x.id===id);if(c)c.stato=stato;applyFilters();updateStats();}
+async function saveNote(id){
+  const note=document.getElementById('noteArea')?.value||'';
+  await supabasePatch(id,{note});
+  const c=allClients.find(x=>x.id===id);if(c)c.note=note;
+  const el=document.getElementById('noteSaved');if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2000);}
+}
+async function supabasePatch(id,body){
+  const cfg=getCfg();
+  try{await fetch(`${cfg.url}/rest/v1/clienti?id=eq.${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':cfg.key,'Authorization':`Bearer ${cfg.key}`,'Prefer':'return=minimal'},body:JSON.stringify(body)});}catch(e){console.error(e);}
+}
+function exportCSV(){
+  // Colonne base
+  const baseCols=['id','created_at','stato',...Object.keys(LABELS),'note'];
+  // Macroaree AI — una colonna per area con priorità rilevata
+  const areaCols=['Infortuni / Malattia','Casa','Non Autosufficienza','Famiglia'];
+  const areaKeys=['infortuni','casa','non_autosufficienza','famiglia'];
+  const allCols=[...baseCols,...areaCols,'Sintesi AI'];
+
+  function getPrioritaArea(c, tipoKey){
+    if(!c.ai_esigenze) return 'Non rilevata';
+    const esigenze=safeJSON(c.ai_esigenze,[]);
+    if(!Array.isArray(esigenze)||!esigenze.length) return 'Non rilevata';
+    const match=esigenze.find(e=>{
+      if(!e||!e.tipo) return false;
+      if(tipoKey==='infortuni') return e.tipo==='infortuni'||e.tipo==='malattia';
+      return e.tipo===tipoKey;
+    });
+    if(!match) return 'Non rilevata';
+    return cap(match.priorita)||'Non rilevata';
+  }
+
+  const header=allCols.join(';');
+  const rows=allClients.map(c=>{
+    const base=baseCols.map(k=>`"${(c[k]||'').toString().replace(/"/g,'""')}"`);
+    const aree=areaKeys.map(k=>`"${getPrioritaArea(c,k)}"`);
+    const sintesi=`"${(c.ai_sintesi||'').replace(/"/g,'""')}"`;
+    return [...base,...aree,sintesi].join(';');
+  }).join('\n');
+
+  const BOM='\uFEFF';
+  const blob=new Blob([BOM+header+'\n'+rows],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`clienti_${new Date().toISOString().slice(0,10)}.csv`;a.click();
+}
+
+/* ══ HELPERS ══ */
+function fmtDate(iso,full=false){if(!iso)return'—';const d=new Date(iso);return full?d.toLocaleString('it-IT',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'});}
+function safeJSON(s,fb){try{return JSON.parse(s);}catch{return fb;}}
+function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):'';}
+
+/* ══ INIT ══ */
+(function init(){
+  const cfg=getCfg();
+  if(!cfg.url||!cfg.key||!cfg.claude){
+    document.getElementById('inp-url').value=cfg.url;
+    document.getElementById('inp-key').value=cfg.key;
+    document.getElementById('inp-claude').value=cfg.claude;
+    document.getElementById('setupOverlay').classList.add('show');
+  }else{
+    startApp();
+  }
+})();
+</script>
+</body>
+</html>
