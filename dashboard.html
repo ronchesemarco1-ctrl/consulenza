@@ -257,7 +257,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;colo
 </div>
 
 <script>
-const LABELS={nome:'Nome',cognome:'Cognome',eta:'Fascia d\'età',professione:'Condizione professionale',famiglia:'Familiari a carico',patrimonio:'Patrimonio immobiliare',casa_protezione:'Protezione immobile',salute:'Stato di salute',reddito:'Copertura reddito/famiglia',premorienza:'Premorienza',autosufficienza:'Non autosufficienza',coperture:'Coperture assicurative',priorita:'Priorità di protezione',budget:'Budget mensile'};
+const LABELS={nome:'Nome',cognome:'Cognome',eta:'Fascia d\'età',professione:'Condizione professionale',famiglia:'Nucleo familiare',patrimonio:'Patrimonio immobiliare',casa_protezione:'Protezione immobile',salute:'Soddisfazione SSN',salute_miglioramento:'Miglioramento SSN',reddito:'Copertura reddito/famiglia',premorienza:'Premorienza',autosufficienza:'Non autosufficienza',coperture:'Coperture assicurative',priorita:'Priorità di protezione',budget:'Budget mensile'};
 
 /* ══ CONFIG ══ */
 function getCfg(){return{url:localStorage.getItem('ca_supabase_url')||'',key:localStorage.getItem('ca_supabase_key')||'',claude:localStorage.getItem('ca_claude_key')||''};}
@@ -299,7 +299,14 @@ let allClients=[],currentFilter='tutti',selectedId=null,aiQueue=[],aiRunning=fal
 function startApp(){
   document.getElementById('loadingOverlay').style.display='flex';
   loadClients();
-  setInterval(loadClients,60000);
+  setInterval(async ()=>{
+    // Ricarica i dati ma se c'è un cliente aperto aggiorna solo la lista
+    await loadClients();
+    if(selectedId){
+      const c=allClients.find(x=>x.id===selectedId);
+      if(c) renderDetail(c);
+    }
+  },60000);
 }
 
 async function loadClients(){
@@ -482,9 +489,26 @@ function renderList(clients){
 function selectClient(id){
   selectedId=id;
   const c=allClients.find(x=>x.id===id);if(!c) return;
-  applyFilters(); // aggiorna lista per mostrare active
-  renderDetail(c);
+  renderDetail(c);           // prima il dettaglio
+  renderListOnly();          // poi aggiorna solo la lista (senza toccare il dettaglio)
   if(c.stato==='nuovo') updateStatus(id,'visto');
+}
+
+// Aggiorna solo la lista senza toccare il pannello dettaglio
+function renderListOnly(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  let list=allClients.filter(c=>{
+    const aree=getAree(c);
+    if(currentFilter==='nuovo')              return c.stato==='nuovo';
+    if(currentFilter==='casa')               return aree.has('casa');
+    if(currentFilter==='salute')             return aree.has('salute');
+    if(currentFilter==='non_autosufficienza')return aree.has('non_autosufficienza');
+    if(currentFilter==='premorienza')        return aree.has('premorienza');
+    if(currentFilter==='multi')              return aree.size>1;
+    return true;
+  });
+  if(q) list=list.filter(c=>Object.values(c).some(v=>typeof v==='string'&&v.toLowerCase().includes(q)));
+  renderList(list);
 }
 
 function renderDetail(c){

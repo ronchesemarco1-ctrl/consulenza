@@ -135,9 +135,9 @@ const QUESTIONS = [
   },
   {
     id:'famiglia', multi:true,
-    title:'Ha <em>persone a carico</em> o familiari conviventi?',
+    title:'Quali <em>persone compongono</em> il suo nucleo familiare?',
     sub:'Può selezionare più opzioni.',
-    opts:['Coniuge / partner','Figli minori o a carico','Genitori anziani','Nessun familiare a carico o convivente']
+    opts:['Coniuge / convivente','Figli','Genitori','Nessun familiare']
   },
   {
     id:'patrimonio', multi:false,
@@ -148,15 +148,22 @@ const QUESTIONS = [
   {
     id:'casa_protezione', multi:false,
     title:'La protezione dei <em>beni immobiliari</em> è un tema che la preoccupa?',
-    sub:'Danni diretti all’immobile o all’arredamento da incendio, furto e responsabilità civile per danni a terzi.',
-    condizione: function(c){ return c.patrimonio && (c.patrimonio.includes('prima casa') || c.patrimonio.includes('pi\u00f9 immobili')); },
-    opts:['Sì, è una priorità per me','In parte, ma non ho ancora valutato soluzioni','Ne sono consapevole ma non ho ancora approfondito','Non l\'ho mai considerato un rischio rilevante']
+    sub:'Danni diretti all’immobile o arredamento da incendio, furto e responsabilità civile per danni a terzi.',
+    condizione: function(c){ return c.patrimonio && (c.patrimonio.includes('prima casa') || c.patrimonio.includes('più immobili')); },
+    opts:['Sì, è una priorità per me e sono assicurato','Sì, ma non sono assicurato','Ne sono consapevole ma non ho ancora approfondito','Non l’ho mai considerato un rischio rilevante']
   },
   {
     id:'salute', multi:false,
-    title:'Qual è la sua <em>situazione di salute</em> attuale?',
-    sub:'La risposta è trattata con la massima riservatezza.',
-    opts:['Sono in buono stato di salute','Ho patologie lievi e gestite','Ho patologie croniche o invalidanti','Preferirei non rispondere']
+    title:'È soddisfatto dell’attuale <em>sistema sanitario pubblico</em>?',
+    sub:null,
+    opts:['Sì, sono soddisfatto','Sono soddisfatto in parte','Poco soddisfatto','Per nulla soddisfatto']
+  },
+  {
+    id:'salute_miglioramento', multi:true,
+    title:'Cosa migliorerebbe dell’attuale <em>sistema sanitario pubblico</em>?',
+    sub:'Può selezionare più opzioni.',
+    condizione: function(c){ return c.salute && (c.salute.includes('in parte') || c.salute.includes('Poco') || c.salute.includes('nulla')); },
+    opts:['Liste d’attesa per le prestazioni','Modalità di prenotazione','Ambienti trascurati','Altro']
   },
   {
     id:'reddito', multi:false,
@@ -168,6 +175,7 @@ const QUESTIONS = [
     id:'premorienza', multi:false,
     title:'In caso di <em>premorienza</em>, la sua famiglia sarebbe economicamente tutelata?',
     sub:'La premorienza è il rischio di venire a mancare prima del previsto, lasciando i propri cari senza adeguato sostegno economico.',
+    condizione: function(c){ return !c.famiglia || !c.famiglia.includes('Nessun familiare'); },
     opts:['Sì, la mia famiglia sarebbe tutelata','Parzialmente, ma non in modo sufficiente','No, la mia famiglia si troverebbe in difficoltà economica','Non ho mai considerato questo scenario']
   },
   {
@@ -194,7 +202,7 @@ const QUESTIONS = [
     sub:'Indicazione orientativa per calibrare le soluzioni più adeguate.',
     opts:['Fino a 50 €/mese','50 – 100 €/mese','100 – 200 €/mese','Oltre 200 €/mese']
   }
-];
+]
 
 const LETTERS=['A','B','C','D'];
 let step=-1, answers={};
