@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Consulenza Assicurativa</title>
+<title>Analisi Patrimoniale — Consulenza Assicurativa</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -15,7 +15,6 @@
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;color:var(--ink);}
-
 #questionView{display:flex;flex-direction:column;min-height:100vh;}
 .q-header{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;}
 .logo-area{display:flex;align-items:center;gap:12px;}
@@ -33,8 +32,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;colo
 .q-title em{font-style:italic;color:var(--blue);}
 .q-subtitle{font-size:13.5px;color:var(--ink-light);margin-bottom:32px;line-height:1.6;}
 .q-spacer{margin-bottom:36px;}
-
-/* Testo libero */
 .text-fields{display:flex;flex-direction:column;gap:14px;margin-bottom:8px;}
 .text-field-wrap{display:flex;flex-direction:column;gap:6px;}
 .text-field-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-faint);}
@@ -44,8 +41,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;colo
 .text-field-err{font-size:11.5px;color:#9B3A2A;display:none;margin-top:2px;}
 .continue-btn{margin-top:24px;padding:15px 36px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:14.5px;font-weight:600;cursor:pointer;transition:opacity .2s;align-self:flex-start;}
 .continue-btn:hover{opacity:.9;}
-
-/* Opzioni scelta singola */
 .options-grid{display:grid;gap:8px;}
 .opt{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:15px 18px;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink-mid);line-height:1.4;box-shadow:var(--shadow-sm);transition:border-color .15s,background .15s,color .15s;-webkit-appearance:none;appearance:none;outline:none;-webkit-tap-highlight-color:transparent;user-select:none;}
 .opt:not(.is-selected):not(.is-dim):hover{border-color:var(--blue-border);background:var(--blue-dim);color:var(--blue);}
@@ -55,8 +50,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;colo
 .opt.is-dim{opacity:.35;cursor:default;pointer-events:none;box-shadow:none;}
 .opt-badge{width:28px;height:28px;border:1.5px solid var(--border-mid);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:var(--ink-faint);flex-shrink:0;transition:border-color .15s,color .15s,background .15s;}
 .opt-text{flex:1;}
-
-/* Opzioni multiscelta */
 .opt.multi-opt{cursor:pointer;pointer-events:auto;opacity:1;}
 .opt.multi-opt.is-selected{border-color:var(--blue)!important;background:var(--blue-dim)!important;color:var(--blue)!important;box-shadow:0 0 0 3px rgba(30,74,140,0.10);}
 .opt.multi-opt.is-selected .opt-badge{border-color:var(--blue)!important;color:var(--surface)!important;background:var(--blue)!important;}
@@ -64,14 +57,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;colo
 .multi-confirm.show{display:inline-block;}
 .multi-confirm:hover{opacity:.9;}
 .multi-hint{font-size:12px;color:var(--ink-faint);margin-top:12px;}
-
 @keyframes fadeSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .q-main>div{animation:fadeSlide .35s cubic-bezier(.4,0,.2,1) both;}
-
 .q-footer{background:var(--surface);border-top:1px solid var(--border);padding:16px 48px;display:flex;align-items:center;justify-content:space-between;}
 .q-footer-text{font-size:10.5px;color:var(--ink-faint);}
 .q-footer-brand{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--ink-faint);}
-
 #thanksView{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;background:var(--bg);}
 #thanksView.show{display:flex;}
 .thanks-check{width:64px;height:64px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:24px;}
@@ -79,11 +69,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;colo
 .thanks-title{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:500;color:var(--ink);margin-bottom:12px;}
 .thanks-name{color:var(--blue);}
 .thanks-sub{font-size:15px;color:var(--ink-light);line-height:1.7;max-width:400px;}
-
-@media(max-width:600px){
-  .q-header,.q-main,.q-footer{padding-left:20px;padding-right:20px;}
-  .q-main{padding-top:40px;}
-}
+@media(max-width:600px){.q-header,.q-main,.q-footer{padding-left:20px;padding-right:20px;}.q-main{padding-top:40px;}}
 </style>
 </head>
 <body>
@@ -94,14 +80,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;colo
       <div class="logo-mark">CA</div>
       <div>
         <div class="logo-text">Consulenza Assicurativa</div>
-        <div class="logo-sub">Questionario</div>
+        <div class="logo-sub">Analisi Patrimoniale</div>
       </div>
     </div>
     <div class="progress-wrap" id="progressWrap"></div>
   </header>
   <main class="q-main" id="qMain"></main>
   <footer class="q-footer">
-    <span class="q-footer-text">Dati trattati con riservatezza · GDPR</span>
+    <span class="q-footer-text">Dati trattati con riservatezza &middot; GDPR</span>
     <span class="q-footer-brand">Riservato al consulente</span>
   </footer>
 </div>
@@ -113,458 +99,341 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;colo
     </svg>
   </div>
   <div class="thanks-title">Grazie, <span class="thanks-name" id="thanksName"></span>.</div>
-  <div class="thanks-sub">Il suo consulente ha ricevuto il profilo e la contatterà a breve per fissare un appuntamento personalizzato.</div>
+  <div class="thanks-sub">Il suo consulente ha ricevuto il profilo e la contatter&agrave; a breve per fissare un appuntamento personalizzato.</div>
 </div>
 
 <script>
-const SUPABASE_URL = 'https://wybvstiitjztqnmljmgy.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5YnZzdGlpdGp6dHFubWxqbWd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NDI4OTQsImV4cCI6MjA5MTIxODg5NH0.De2yt8lcEBNqSm79BMY8Wj3NJ_3z6OQDDe4LMq7ynNw';
+var SUPABASE_URL = 'https://wybvstiitjztqnmljmgy.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5YnZzdGlpdGp6dHFubWxqbWd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NDI4OTQsImV4cCI6MjA5MTIxODg5NH0.De2yt8lcEBNqSm79BMY8Wj3NJ_3z6OQDDe4LMq7ynNw';
 
-const QUESTIONS = [
+var QUESTIONS = [
   {
-    id:'eta', multi:false,
-    title:'A quale <em>fascia d\'età</em> appartiene?',
-    sub:null,
-    opts:['Meno di 40 anni','40 – 55 anni','56 – 65 anni','Oltre 65 anni']
+    id: 'eta',
+    multi: false,
+    title: 'A quale <em>fascia d\u2019et\u00e0</em> appartiene?',
+    sub: null,
+    opts: ['Meno di 40 anni', '40 \u2013 55 anni', '56 \u2013 65 anni', 'Oltre 65 anni']
   },
   {
-    id:'professione', multi:false,
-    title:'Qual è la sua <em>condizione professionale</em>?',
-    sub:null,
-    opts:['Lavoratore dipendente','Libero professionista','Imprenditore / Titolare','Pensionato']
+    id: 'professione',
+    multi: false,
+    title: 'Qual \u00e8 la sua <em>condizione professionale</em>?',
+    sub: null,
+    opts: ['Lavoratore dipendente', 'Libero professionista', 'Imprenditore / Titolare', 'Pensionato']
   },
   {
-    id:'famiglia', multi:true,
-    title:'Com’è composto il suo <em>nucleo familiare</em>?',
-    sub:'Può selezionare più opzioni.',
-    opts:['Coniuge / convivente','Figli','Genitori','Nessun familiare']
+    id: 'famiglia',
+    multi: true,
+    title: 'Com\u2019\u00e8 composto il suo <em>nucleo familiare</em>?',
+    sub: 'Pu\u00f2 selezionare pi\u00f9 opzioni.',
+    condizione: null,
+    opts: ['Coniuge / convivente', 'Figli', 'Genitori', 'Nessun familiare']
   },
   {
-    id:'patrimonio', multi:false,
-    title:'È proprietario di <em>beni immobili</em>?',
-    sub:null,
-    opts:['Sì, prima casa','Sì, più immobili','Vive in affitto','No']
+    id: 'patrimonio',
+    multi: false,
+    title: '\u00c8 proprietario di <em>beni immobili</em>?',
+    sub: null,
+    condizione: null,
+    opts: ['S\u00ec, prima casa', 'S\u00ec, pi\u00f9 immobili', 'Vive in affitto', 'No']
   },
   {
-    id:'casa_protezione', multi:false,
-    title:'La protezione dei <em>beni immobiliari</em> è un tema che la preoccupa?',
-    sub:'Danni diretti all’immobile o arredamento da incendio, furto e responsabilità civile per danni a terzi.',
-    condizione: function(c){ return c.patrimonio && (c.patrimonio.includes('prima casa') || c.patrimonio.includes('più immobili')); },
-    opts:['Sì, è una priorità per me e sono assicurato','Sì, ma non sono assicurato','Ne sono consapevole ma non ho ancora approfondito','Non l’ho mai considerato un rischio rilevante']
+    id: 'casa_protezione',
+    multi: false,
+    title: 'La protezione dei <em>beni immobiliari</em> \u00e8 un tema che la preoccupa?',
+    sub: 'Danni diretti all\u2019immobile o arredamento da incendio, furto e responsabilit\u00e0 civile per danni a terzi.',
+    condizione: function(c) {
+      return c.patrimonio && (c.patrimonio.indexOf('prima casa') !== -1 || c.patrimonio.indexOf('immobili') !== -1);
+    },
+    opts: ['S\u00ec, \u00e8 una priorit\u00e0 per me e sono assicurato', 'S\u00ec, ma non sono assicurato', 'Ne sono consapevole ma non ho ancora approfondito', 'Non l\u2019ho mai considerato un rischio rilevante']
   },
   {
-    id:'salute_miglioramento', multi:true,
-    title:'Se potesse migliorare il <em>sistema sanitario pubblico</em>, da dove inizierebbe?',
-    sub:'Può selezionare più opzioni.',
-    opts:['Liste d’attesa per le prestazioni','Modalità di prenotazione','Altro','Non modificherei nulla']
+    id: 'salute_miglioramento',
+    multi: true,
+    title: 'Se potesse migliorare il <em>sistema sanitario pubblico</em>, da dove inizierebbe?',
+    sub: 'Pu\u00f2 selezionare pi\u00f9 opzioni.',
+    condizione: null,
+    opts: ['Liste d\u2019attesa per le prestazioni', 'Modalit\u00e0 di prenotazione', 'Altro', 'Non modificherei nulla']
   },
   {
-    id:'reddito', multi:false,
-    title:'In caso di <em>infortunio o malattia grave</em>, il suo reddito e la sua famiglia sarebbero protetti?',
-    sub:null,
-    opts:['Sì, ho una copertura adeguata','Ho una copertura parziale, incerta','Nessuna copertura significativa','Non lo sa con certezza']
+    id: 'reddito',
+    multi: false,
+    title: 'In caso di <em>infortunio o malattia grave</em>, il suo reddito e la sua famiglia sarebbero protetti?',
+    sub: null,
+    condizione: null,
+    opts: ['S\u00ec, ho una copertura adeguata', 'Ho una copertura parziale, incerta', 'Nessuna copertura significativa', 'Non lo sa con certezza']
   },
   {
-    id:'premorienza', multi:false,
-    title:'In caso di <em>premorienza</em>, la sua famiglia sarebbe economicamente tutelata?',
-    sub:'La premorienza è il rischio di venire a mancare prima del previsto, lasciando i propri cari senza adeguato sostegno economico.',
-    condizione: function(c){ return !c.famiglia || !c.famiglia.includes('Nessun familiare'); },
-    opts:['Sì, la mia famiglia sarebbe tutelata','Parzialmente, ma non in modo sufficiente','No, la mia famiglia si troverebbe in difficoltà economica','Non ho mai considerato questo scenario']
+    id: 'premorienza',
+    multi: false,
+    title: 'In caso di <em>premorienza</em>, la sua famiglia sarebbe economicamente tutelata?',
+    sub: 'La premorienza \u00e8 il rischio di venire a mancare prima del previsto, lasciando i propri cari senza adeguato sostegno economico.',
+    condizione: function(c) {
+      return !c.famiglia || c.famiglia.indexOf('Nessun familiare') === -1;
+    },
+    opts: ['S\u00ec, la mia famiglia sarebbe tutelata', 'Parzialmente, ma non in modo sufficiente', 'No, la mia famiglia si troverebbe in difficolt\u00e0 economica', 'Non ho mai considerato questo scenario']
   },
   {
-    id:'autosufficienza', multi:false,
-    title:'Il tema della <em>non autosufficienza</em> la riguarda o la preoccupa?',
-    sub:'Inabilità a svolgere autonomamente le attività quotidiane fondamentali.',
-    opts:['Sì, è una preoccupazione concreta','Potrebbe riguardarmi in futuro','Ho già un familiare non autosufficiente','Non ho considerato questo rischio']
+    id: 'autosufficienza',
+    multi: false,
+    title: 'Il tema della <em>non autosufficienza</em> la riguarda o la preoccupa?',
+    sub: 'Inabiit\u00e0 a svolgere autonomamente le attivit\u00e0 quotidiane fondamentali.',
+    condizione: null,
+    opts: ['S\u00ec, \u00e8 una preoccupazione concreta', 'Potrebbe riguardarmi in futuro', 'Ho gi\u00e0 un familiare non autosufficiente', 'Non ho considerato questo rischio']
   },
   {
-    id:'coperture', multi:false,
-    title:'Considerate le risposte precedenti, dispone attualmente di <em>coperture assicurative</em> attive?',
-    sub:null,
-    opts:['Sì, ho coperture adeguate','Sì, ma probabilmente insufficienti','No, nessuna','Non sono a conoscenza di cosa possiedo']
+    id: 'coperture',
+    multi: false,
+    title: 'Considerate le risposte precedenti, dispone attualmente di <em>coperture assicurative</em> attive?',
+    sub: null,
+    condizione: null,
+    opts: ['S\u00ec, ho coperture adeguate', 'S\u00ec, ma probabilmente insufficienti', 'No, nessuna', 'Non sono a conoscenza di cosa possiedo']
   },
   {
-    id:'priorita', multi:true,
-    title:'Indichi le sue <em>priorità di protezione</em> in ordine di importanza.',
-    sub:'Selezioni le aree che ritiene più rilevanti, partendo da quella più urgente.',
-    opts:['Proteggere il reddito in caso di invalidità','Proteggere la famiglia in caso di premorienza','Garantire assistenza in caso di non autosufficienza','Tutelare il patrimonio immobiliare','Protezione globale — tutelare tutti gli ambiti della mia vita']
+    id: 'priorita',
+    multi: true,
+    title: 'Indichi le sue <em>priorit\u00e0 di protezione</em> in ordine di importanza.',
+    sub: 'Selezioni le aree che ritiene pi\u00f9 rilevanti, partendo da quella pi\u00f9 urgente.',
+    condizione: null,
+    opts: ['Proteggere il reddito in caso di invalidit\u00e0', 'Proteggere la famiglia in caso di premorienza', 'Garantire assistenza in caso di non autosufficienza', 'Tutelare il patrimonio immobiliare', 'Protezione globale \u2014 tutelare tutti gli ambiti della mia vita']
   },
   {
-    id:'budget', multi:false,
-    title:'Quale <em>spesa mensile</em> sarebbe disposto a destinare alla propria protezione?',
-    sub:'Indicazione orientativa per calibrare le soluzioni più adeguate.',
-    opts:['Fino a 50 €/mese','50 – 100 €/mese','100 – 200 €/mese','Oltre 200 €/mese']
+    id: 'budget',
+    multi: false,
+    title: 'Quale <em>spesa mensile</em> sarebbe disposto a destinare alla propria protezione?',
+    sub: 'Indicazione orientativa per calibrare le soluzioni pi\u00f9 adeguate.',
+    condizione: null,
+    opts: ['Fino a 50 \u20ac/mese', '50 \u2013 100 \u20ac/mese', '100 \u2013 200 \u20ac/mese', 'Oltre 200 \u20ac/mese']
   }
-]!DOCTYPE html>
-<html lang="it">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Consulenza Assicurativa</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#F0EDE8;--surface:#FAFAF8;--surface-2:#F4F1EC;
-  --ink:#1A1612;--ink-mid:#3D3830;--ink-light:#6B6358;--ink-faint:#A09890;
-  --blue:#1E4A8C;--blue-dim:rgba(30,74,140,0.08);--blue-border:rgba(30,74,140,0.22);
-  --border:rgba(26,22,18,0.10);--border-mid:rgba(26,22,18,0.16);
-  --green:#1e7a45;--radius:12px;--shadow-sm:0 1px 4px rgba(26,22,18,0.07);
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;color:var(--ink);}
+];
 
-#questionView{display:flex;flex-direction:column;min-height:100vh;}
-.q-header{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;}
-.logo-area{display:flex;align-items:center;gap:12px;}
-.logo-mark{width:34px;height:34px;border:1.5px solid var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--blue);}
-.logo-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--ink);}
-.logo-sub{font-size:9px;color:var(--ink-faint);letter-spacing:2px;text-transform:uppercase;margin-top:1px;}
-.progress-wrap{display:flex;align-items:center;gap:4px;}
-.prog-seg{height:3px;width:20px;border-radius:3px;background:var(--border-mid);overflow:hidden;position:relative;}
-.prog-seg-fill{position:absolute;inset:0;border-radius:3px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .3s ease;}
-.prog-seg.done .prog-seg-fill{transform:scaleX(1);}
-.prog-seg.active .prog-seg-fill{transform:scaleX(.45);background:rgba(30,74,140,0.55);}
-.q-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:56px 48px 48px;max-width:680px;margin:0 auto;width:100%;}
-.q-step-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:16px;font-weight:600;}
-.q-title{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3.5vw,36px);font-weight:500;color:var(--ink);line-height:1.25;margin-bottom:8px;}
-.q-title em{font-style:italic;color:var(--blue);}
-.q-subtitle{font-size:13.5px;color:var(--ink-light);margin-bottom:32px;line-height:1.6;}
-.q-spacer{margin-bottom:36px;}
+var LETTERS = ['A','B','C','D','E'];
+var step = -1;
+var answers = {};
 
-/* Testo libero */
-.text-fields{display:flex;flex-direction:column;gap:14px;margin-bottom:8px;}
-.text-field-wrap{display:flex;flex-direction:column;gap:6px;}
-.text-field-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-faint);}
-.text-field{padding:14px 18px;border:1.5px solid var(--border-mid);border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:15px;color:var(--ink);background:var(--surface);outline:none;transition:border-color .2s;box-shadow:var(--shadow-sm);}
-.text-field:focus{border-color:var(--blue);}
-.text-field::placeholder{color:var(--ink-faint);}
-.text-field-err{font-size:11.5px;color:#9B3A2A;display:none;margin-top:2px;}
-.continue-btn{margin-top:24px;padding:15px 36px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:14.5px;font-weight:600;cursor:pointer;transition:opacity .2s;align-self:flex-start;}
-.continue-btn:hover{opacity:.9;}
-
-/* Opzioni scelta singola */
-.options-grid{display:grid;gap:8px;}
-.opt{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:15px 18px;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink-mid);line-height:1.4;box-shadow:var(--shadow-sm);transition:border-color .15s,background .15s,color .15s;-webkit-appearance:none;appearance:none;outline:none;-webkit-tap-highlight-color:transparent;user-select:none;}
-.opt:not(.is-selected):not(.is-dim):hover{border-color:var(--blue-border);background:var(--blue-dim);color:var(--blue);}
-.opt:not(.is-selected):not(.is-dim):hover .opt-badge{border-color:var(--blue-border);color:var(--blue);background:var(--blue-dim);}
-.opt.is-selected{border-color:var(--blue)!important;background:var(--blue-dim)!important;color:var(--blue)!important;box-shadow:0 0 0 3px rgba(30,74,140,0.10);}
-.opt.is-selected .opt-badge{border-color:var(--blue)!important;color:var(--surface)!important;background:var(--blue)!important;}
-.opt.is-dim{opacity:.35;cursor:default;pointer-events:none;box-shadow:none;}
-.opt-badge{width:28px;height:28px;border:1.5px solid var(--border-mid);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:var(--ink-faint);flex-shrink:0;transition:border-color .15s,color .15s,background .15s;}
-.opt-text{flex:1;}
-
-/* Opzioni multiscelta */
-.opt.multi-opt{cursor:pointer;pointer-events:auto;opacity:1;}
-.opt.multi-opt.is-selected{border-color:var(--blue)!important;background:var(--blue-dim)!important;color:var(--blue)!important;box-shadow:0 0 0 3px rgba(30,74,140,0.10);}
-.opt.multi-opt.is-selected .opt-badge{border-color:var(--blue)!important;color:var(--surface)!important;background:var(--blue)!important;}
-.multi-confirm{margin-top:16px;padding:14px 32px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s;display:none;}
-.multi-confirm.show{display:inline-block;}
-.multi-confirm:hover{opacity:.9;}
-.multi-hint{font-size:12px;color:var(--ink-faint);margin-top:12px;}
-
-@keyframes fadeSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.q-main>div{animation:fadeSlide .35s cubic-bezier(.4,0,.2,1) both;}
-
-.q-footer{background:var(--surface);border-top:1px solid var(--border);padding:16px 48px;display:flex;align-items:center;justify-content:space-between;}
-.q-footer-text{font-size:10.5px;color:var(--ink-faint);}
-.q-footer-brand{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--ink-faint);}
-
-#thanksView{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;background:var(--bg);}
-#thanksView.show{display:flex;}
-.thanks-check{width:64px;height:64px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:24px;}
-.thanks-check svg{width:28px;height:28px;}
-.thanks-title{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:500;color:var(--ink);margin-bottom:12px;}
-.thanks-name{color:var(--blue);}
-.thanks-sub{font-size:15px;color:var(--ink-light);line-height:1.7;max-width:400px;}
-
-@media(max-width:600px){
-  .q-header,.q-main,.q-footer{padding-left:20px;padding-right:20px;}
-  .q-main{padding-top:40px;}
-}
-</style>
-</head>
-<body>
-
-<div id="questionView">
-  <header class="q-header">
-    <div class="logo-area">
-      <div class="logo-mark">CA</div>
-      <div>
-        <div class="logo-text">Consulenza Assicurativa</div>
-        <div class="logo-sub">Questionario</div>
-      </div>
-    </div>
-    <div class="progress-wrap" id="progressWrap"></div>
-  </header>
-  <main class="q-main" id="qMain"></main>
-  <footer class="q-footer">
-    <span class="q-footer-text">Dati trattati con riservatezza · GDPR</span>
-    <span class="q-footer-brand">Riservato al consulente</span>
-  </footer>
-</div>
-
-<div id="thanksView">
-  <div class="thanks-check">
-    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="20 6 9 17 4 12"/>
-    </svg>
-  </div>
-  <div class="thanks-title">Grazie, <span class="thanks-name" id="thanksName"></span>.</div>
-  <div class="thanks-sub">Il suo consulente ha ricevuto il profilo e la contatterà a breve per fissare un appuntamento personalizzato.</div>
-</div>
-
-<script>
-const SUPABASE_URL = 'https://wybvstiitjztqnmljmgy.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5YnZzdGlpdGp6dHFubWxqbWd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NDI4OTQsImV4cCI6MjA5MTIxODg5NH0.De2yt8lcEBNqSm79BMY8Wj3NJ_3z6OQDDe4LMq7ynNw';
-
-const QUESTIONS = [
-  {
-    id:'eta', multi:false,
-    title:'A quale <em>fascia d\'età</em> appartiene?',
-    sub:null,
-    opts:['Meno di 40 anni','40 – 55 anni','56 – 65 anni','Oltre 65 anni']
-  },
-  {
-    id:'professione', multi:false,
-    title:'Qual è la sua <em>condizione professionale</em>?',
-    sub:null,
-    opts:['Lavoratore dipendente','Libero professionista','Imprenditore / Titolare','Pensionato']
-  },
-  {
-    id:'famiglia', multi:true,
-    title:'Com’è composto il suo <em>nucleo familiare</em>?',
-    sub:'Può selezionare più opzioni.',
-    opts:['Coniuge / convivente','Figli','Genitori','Nessun familiare']
-  },
-  {
-    id:'patrimonio', multi:false,
-    title:'È proprietario di <em>beni immobili</em>?',
-    sub:null,
-    opts:['Sì, prima casa','Sì, più immobili','Vive in affitto','No']
-  },
-  {
-    id:'casa_protezione', multi:false,
-    title:'La protezione dei <em>beni immobiliari</em> è un tema che la preoccupa?',
-    sub:'Danni diretti all’immobile o arredamento da incendio, furto e responsabilità civile per danni a terzi.',
-    condizione: function(c){ return c.patrimonio && (c.patrimonio.includes('prima casa') || c.patrimonio.includes('più immobili')); },
-    opts:['Sì, è una priorità per me e sono assicurato','Sì, ma non sono assicurato','Ne sono consapevole ma non ho ancora approfondito','Non l’ho mai considerato un rischio rilevante']
-  },
-  {
-    id:'salute', multi:false,
-    title:'È soddisfatto dell’attuale <em>sistema sanitario pubblico</em>?',
-    sub:null,
-    opts:['Sì, sono soddisfatto','Sono soddisfatto in parte','Poco soddisfatto','Per nulla soddisfatto']
-  },
-  {
-    id:'salute_miglioramento', multi:true,
-    title:'Cosa migliorerebbe dell’attuale <em>sistema sanitario pubblico</em>?',
-    sub:'Può selezionare più opzioni.',
-    condizione: function(c){ return c.salute && (c.salute.includes('in parte') || c.salute.includes('Poco') || c.salute.includes('nulla')); },
-    opts:['Liste d’attesa per le prestazioni','Modalità di prenotazione','Ambienti trascurati','Altro']
-  },
-  {
-    id:'reddito', multi:false,
-    title:'In caso di <em>infortunio o malattia grave</em>, il suo reddito e la sua famiglia sarebbero protetti?',
-    sub:null,
-    opts:['Sì, ho una copertura adeguata','Ho una copertura parziale, incerta','Nessuna copertura significativa','Non lo sa con certezza']
-  },
-  {
-    id:'premorienza', multi:false,
-    title:'In caso di <em>premorienza</em>, la sua famiglia sarebbe economicamente tutelata?',
-    sub:'La premorienza è il rischio di venire a mancare prima del previsto, lasciando i propri cari senza adeguato sostegno economico.',
-    condizione: function(c){ return !c.famiglia || !c.famiglia.includes('Nessun familiare'); },
-    opts:['Sì, la mia famiglia sarebbe tutelata','Parzialmente, ma non in modo sufficiente','No, la mia famiglia si troverebbe in difficoltà economica','Non ho mai considerato questo scenario']
-  },
-  {
-    id:'autosufficienza', multi:false,
-    title:'Il tema della <em>non autosufficienza</em> la riguarda o la preoccupa?',
-    sub:'Inabilità a svolgere autonomamente le attività quotidiane fondamentali.',
-    opts:['Sì, è una preoccupazione concreta','Potrebbe riguardarmi in futuro','Ho già un familiare non autosufficiente','Non ho considerato questo rischio']
-  },
-  {
-    id:'coperture', multi:false,
-    title:'Considerate le risposte precedenti, dispone attualmente di <em>coperture assicurative</em> attive?',
-    sub:null,
-    opts:['Sì, ho coperture adeguate','Sì, ma probabilmente insufficienti','No, nessuna','Non sono a conoscenza di cosa possiedo']
-  },
-  {
-    id:'priorita', multi:true,
-    title:'Indichi le sue <em>priorità di protezione</em> in ordine di importanza.',
-    sub:'Selezioni le aree che ritiene più rilevanti, partendo da quella più urgente.',
-    opts:['Proteggere il reddito in caso di invalidità','Proteggere la famiglia in caso di premorienza','Garantire assistenza in caso di non autosufficienza','Tutelare il patrimonio immobiliare','Protezione globale — tutelare tutti gli ambiti della mia vita']
-  },
-  {
-    id:'budget', multi:false,
-    title:'Quale <em>spesa mensile</em> sarebbe disposto a destinare alla propria protezione?',
-    sub:'Indicazione orientativa per calibrare le soluzioni più adeguate.',
-    opts:['Fino a 50 €/mese','50 – 100 €/mese','100 – 200 €/mese','Oltre 200 €/mese']
+function getVisibleQuestions() {
+  var result = [];
+  for (var i = 0; i < QUESTIONS.length; i++) {
+    var q = QUESTIONS[i];
+    if (!q.condizione || q.condizione(answers)) {
+      result.push(i);
+    }
   }
-]
-
-const LETTERS=['A','B','C','D'];
-let step=-1, answers={};
-
-/* ── PROGRESS ── */
-function getVisibleQuestions(){
-  // Restituisce gli indici delle domande visibili in base alle risposte date finora
-  return QUESTIONS.map((q,i)=>i).filter(i=>{
-    const q=QUESTIONS[i];
-    if(!q.condizione) return true;
-    return q.condizione(answers);
-  });
+  return result;
 }
 
-function renderProgress(){
-  const w=document.getElementById('progressWrap'); w.innerHTML='';
-  const visible=getVisibleQuestions();
-  const total=visible.length+1; // +1 per schermata nome
-  // current = quante domande visibili sono già state completate
-  const doneCount=visible.filter(i=>i<step).length;
-  const currentPos=step===-1?0:doneCount+(step<QUESTIONS.length?1:total);
-  for(let i=0;i<total;i++){
-    const s=document.createElement('div');
-    s.className='prog-seg'+(i<currentPos?' done':i===currentPos?' active':'');
-    const f=document.createElement('div'); f.className='prog-seg-fill';
-    s.appendChild(f); w.appendChild(s);
+function renderProgress() {
+  var w = document.getElementById('progressWrap');
+  w.innerHTML = '';
+  var visible = getVisibleQuestions();
+  var total = visible.length + 1;
+  var current = step === -1 ? 0 : visible.indexOf(step) + 1;
+  for (var i = 0; i < total; i++) {
+    var s = document.createElement('div');
+    s.className = 'prog-seg' + (i < current ? ' done' : i === current ? ' active' : '');
+    var f = document.createElement('div');
+    f.className = 'prog-seg-fill';
+    s.appendChild(f);
+    w.appendChild(s);
   }
 }
 
-/* ── SCHERMATA NOME/COGNOME ── */
-function renderNameStep(){
-  const main=document.getElementById('qMain');
-  main.innerHTML=''; void main.offsetHeight;
-  const frag=document.createDocumentFragment();
-  const wrap=document.createElement('div');
-  wrap.innerHTML=`
-    <div class="q-step-label">Prima di iniziare</div>
-    <h1 class="q-title">Come si <em>chiama</em>?</h1>
-    <p class="q-subtitle">Servirà al suo consulente per personalizzare l'appuntamento.</p>
-    <div class="text-fields">
-      <div class="text-field-wrap">
-        <span class="text-field-label">Nome</span>
-        <input class="text-field" id="fieldNome" placeholder="Es. Marco" autocomplete="given-name"/>
-        <span class="text-field-err" id="errNome">Campo obbligatorio</span>
-      </div>
-      <div class="text-field-wrap">
-        <span class="text-field-label">Cognome</span>
-        <input class="text-field" id="fieldCognome" placeholder="Es. Rossi" autocomplete="family-name"/>
-        <span class="text-field-err" id="errCognome">Campo obbligatorio</span>
-      </div>
-    </div>
-    <button class="continue-btn" id="continueBtn">Continua</button>`;
+function renderNameStep() {
+  var main = document.getElementById('qMain');
+  main.innerHTML = '';
+  void main.offsetHeight;
+  var frag = document.createDocumentFragment();
+  var wrap = document.createElement('div');
+  wrap.innerHTML = '<div class="q-step-label">Prima di iniziare</div>' +
+    '<h1 class="q-title">Come si <em>chiama</em>?</h1>' +
+    '<p class="q-subtitle">Serv\u00ecr\u00e0 al suo consulente per personalizzare l\u2019appuntamento.</p>' +
+    '<div class="text-fields">' +
+      '<div class="text-field-wrap">' +
+        '<span class="text-field-label">Nome</span>' +
+        '<input class="text-field" id="fieldNome" placeholder="Es. Marco" autocomplete="given-name"/>' +
+        '<span class="text-field-err" id="errNome">Campo obbligatorio</span>' +
+      '</div>' +
+      '<div class="text-field-wrap">' +
+        '<span class="text-field-label">Cognome</span>' +
+        '<input class="text-field" id="fieldCognome" placeholder="Es. Rossi" autocomplete="family-name"/>' +
+        '<span class="text-field-err" id="errCognome">Campo obbligatorio</span>' +
+      '</div>' +
+    '</div>' +
+    '<button class="continue-btn" id="continueBtn">Continua</button>';
   frag.appendChild(wrap);
   main.appendChild(frag);
   renderProgress();
-  document.getElementById('fieldNome').addEventListener('keydown',e=>{if(e.key==='Enter') document.getElementById('fieldCognome').focus();});
-  document.getElementById('fieldCognome').addEventListener('keydown',e=>{if(e.key==='Enter') submitName();});
+  document.getElementById('fieldNome').addEventListener('keydown', function(e){ if(e.key==='Enter') document.getElementById('fieldCognome').focus(); });
+  document.getElementById('fieldCognome').addEventListener('keydown', function(e){ if(e.key==='Enter') submitName(); });
   document.getElementById('continueBtn').addEventListener('click', submitName);
-  setTimeout(()=>document.getElementById('fieldNome').focus(), 350);
+  setTimeout(function(){ document.getElementById('fieldNome').focus(); }, 350);
 }
 
-function submitName(){
-  const nome=document.getElementById('fieldNome').value.trim();
-  const cognome=document.getElementById('fieldCognome').value.trim();
-  let ok=true;
-  document.getElementById('errNome').style.display    = nome    ? 'none':'block'; if(!nome)    ok=false;
-  document.getElementById('errCognome').style.display = cognome ? 'none':'block'; if(!cognome) ok=false;
-  if(!ok) return;
-  answers.nome=nome; answers.cognome=cognome;
-  step=0; renderQuestion(0);
+function submitName() {
+  var nome = document.getElementById('fieldNome').value.trim();
+  var cognome = document.getElementById('fieldCognome').value.trim();
+  var ok = true;
+  document.getElementById('errNome').style.display    = nome    ? 'none' : 'block'; if (!nome)    ok = false;
+  document.getElementById('errCognome').style.display = cognome ? 'none' : 'block'; if (!cognome) ok = false;
+  if (!ok) return;
+  answers.nome = nome;
+  answers.cognome = cognome;
+  var visible = getVisibleQuestions();
+  step = visible[0];
+  renderQuestion(step);
 }
 
-/* ── RENDER DOMANDA ── */
-function renderQuestion(idx){
-  const q=QUESTIONS[idx], main=document.getElementById('qMain');
-  main.innerHTML=''; void main.offsetHeight;
-  const frag=document.createDocumentFragment(), wrap=document.createElement('div');
-
-  const sl=document.createElement('div'); sl.className='q-step-label'; sl.textContent=`Domanda ${idx+1} di ${QUESTIONS.length}`;
-  const ti=document.createElement('h1'); ti.className='q-title'; ti.innerHTML=q.title;
-  const su=document.createElement(q.sub?'p':'div'); su.className=q.sub?'q-subtitle':'q-spacer'; if(q.sub) su.textContent=q.sub;
-
-  wrap.appendChild(sl); wrap.appendChild(ti); wrap.appendChild(su);
-
-  if(q.multi){
-    renderMulti(wrap, q, idx);
+function advanceStep() {
+  var visible = getVisibleQuestions();
+  var idx = visible.indexOf(step);
+  if (idx < visible.length - 1) {
+    step = visible[idx + 1];
+    renderQuestion(step);
   } else {
-    renderSingle(wrap, q, idx);
+    finish();
+  }
+}
+
+function renderQuestion(idx) {
+  var q = QUESTIONS[idx];
+  var main = document.getElementById('qMain');
+  main.innerHTML = '';
+  void main.offsetHeight;
+
+  var visible = getVisibleQuestions();
+  var qNum = visible.indexOf(idx) + 1;
+
+  var frag = document.createDocumentFragment();
+  var wrap = document.createElement('div');
+
+  var sl = document.createElement('div');
+  sl.className = 'q-step-label';
+  sl.textContent = 'Domanda ' + qNum + ' di ' + visible.length;
+
+  var ti = document.createElement('h1');
+  ti.className = 'q-title';
+  ti.innerHTML = q.title;
+
+  var su;
+  if (q.sub) {
+    su = document.createElement('p');
+    su.className = 'q-subtitle';
+    su.textContent = q.sub;
+  } else {
+    su = document.createElement('div');
+    su.className = 'q-spacer';
   }
 
-  frag.appendChild(wrap); main.appendChild(frag); renderProgress();
+  wrap.appendChild(sl);
+  wrap.appendChild(ti);
+  wrap.appendChild(su);
+
+  if (q.multi) {
+    renderMulti(wrap, q);
+  } else {
+    renderSingle(wrap, q);
+  }
+
+  frag.appendChild(wrap);
+  main.appendChild(frag);
+  renderProgress();
 }
 
-/* Scelta singola — avanza automaticamente al click */
-function renderSingle(wrap, q, idx){
-  const grid=document.createElement('div'); grid.className='options-grid';
-  q.opts.forEach((text,i)=>{
-    const btn=document.createElement('button'); btn.type='button'; btn.className='opt';
-    const b=document.createElement('span'); b.className='opt-badge'; b.textContent=LETTERS[i];
-    const l=document.createElement('span'); l.className='opt-text'; l.textContent=text;
-    btn.appendChild(b); btn.appendChild(l);
-    btn.addEventListener('click',function h(){
-      btn.removeEventListener('click',h);
+function renderSingle(wrap, q) {
+  var grid = document.createElement('div');
+  grid.className = 'options-grid';
+  q.opts.forEach(function(text, i) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'opt';
+    var badge = document.createElement('span');
+    badge.className = 'opt-badge';
+    badge.textContent = LETTERS[i];
+    var label = document.createElement('span');
+    label.className = 'opt-text';
+    label.textContent = text;
+    btn.appendChild(badge);
+    btn.appendChild(label);
+    btn.addEventListener('click', function handleClick() {
+      btn.removeEventListener('click', handleClick);
       btn.classList.add('is-selected');
-      grid.querySelectorAll('.opt').forEach(x=>{if(x!==btn)x.classList.add('is-dim');});
-      answers[q.id]=text;
-      requestAnimationFrame(()=>requestAnimationFrame(()=>{
-        step++;
-        // Salta domande condizionali non applicabili
-        while(step<QUESTIONS.length && QUESTIONS[step].condizione && !QUESTIONS[step].condizione(answers)){
-          step++;
-        }
-        step<QUESTIONS.length ? renderQuestion(step) : finish();
-      }));
+      var all = grid.querySelectorAll('.opt');
+      for (var j = 0; j < all.length; j++) {
+        if (all[j] !== btn) all[j].classList.add('is-dim');
+      }
+      answers[q.id] = text;
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          advanceStep();
+        });
+      });
     });
     grid.appendChild(btn);
   });
   wrap.appendChild(grid);
 }
 
-/* Multiscelta — mostra pulsante Conferma dopo almeno una selezione */
-function renderMulti(wrap, q, idx){
-  const selected=new Set();
-  const grid=document.createElement('div'); grid.className='options-grid';
+function renderMulti(wrap, q) {
+  var selected = [];
+  var grid = document.createElement('div');
+  grid.className = 'options-grid';
 
-  const confirmBtn=document.createElement('button');
-  confirmBtn.type='button'; confirmBtn.className='multi-confirm';
-  confirmBtn.textContent='Conferma e continua';
+  var confirmBtn = document.createElement('button');
+  confirmBtn.type = 'button';
+  confirmBtn.className = 'multi-confirm';
+  confirmBtn.textContent = 'Conferma e continua';
 
-  const hint=document.createElement('p'); hint.className='multi-hint';
-  hint.textContent='Seleziona tutte le opzioni applicabili.';
+  var hint = document.createElement('p');
+  hint.className = 'multi-hint';
+  hint.textContent = 'Selezioni tutte le opzioni applicabili.';
 
-  q.opts.forEach((text,i)=>{
-    const btn=document.createElement('button'); btn.type='button'; btn.className='opt multi-opt';
-    const b=document.createElement('span'); b.className='opt-badge'; b.textContent=LETTERS[i];
-    const l=document.createElement('span'); l.className='opt-text'; l.textContent=text;
-    btn.appendChild(b); btn.appendChild(l);
-    btn.addEventListener('click',()=>{
-      if(selected.has(text)){
-        selected.delete(text);
+  q.opts.forEach(function(text, i) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'opt multi-opt';
+    var badge = document.createElement('span');
+    badge.className = 'opt-badge';
+    badge.textContent = LETTERS[i];
+    var label = document.createElement('span');
+    label.className = 'opt-text';
+    label.textContent = text;
+    btn.appendChild(badge);
+    btn.appendChild(label);
+    btn.addEventListener('click', function() {
+      var idx2 = selected.indexOf(text);
+      if (idx2 !== -1) {
+        selected.splice(idx2, 1);
         btn.classList.remove('is-selected');
       } else {
-        // Se seleziona "Nessun familiare a carico" deseleziona tutto il resto
-        if(text.includes('Nessun')){
-          selected.clear();
-          grid.querySelectorAll('.opt').forEach(x=>x.classList.remove('is-selected'));
+        if (text.indexOf('Nessun') !== -1 || text.indexOf('Non modificherei') !== -1) {
+          selected = [];
+          var all = grid.querySelectorAll('.opt');
+          for (var j = 0; j < all.length; j++) all[j].classList.remove('is-selected');
         } else {
-          // Rimuovi "Nessun" se selezionato in precedenza
-          selected.forEach(s=>{ if(s.includes('Nessun')){ selected.delete(s); grid.querySelectorAll('.opt').forEach(x=>{if(x.querySelector('.opt-text').textContent===s) x.classList.remove('is-selected');}); }});
+          for (var k = selected.length - 1; k >= 0; k--) {
+            if (selected[k].indexOf('Nessun') !== -1 || selected[k].indexOf('Non modificherei') !== -1) {
+              var toRemove = selected[k];
+              selected.splice(k, 1);
+              var all2 = grid.querySelectorAll('.opt');
+              for (var m = 0; m < all2.length; m++) {
+                if (all2[m].querySelector('.opt-text').textContent === toRemove) {
+                  all2[m].classList.remove('is-selected');
+                }
+              }
+            }
+          }
         }
-        selected.add(text);
+        selected.push(text);
         btn.classList.add('is-selected');
       }
-      confirmBtn.classList.toggle('show', selected.size>0);
+      confirmBtn.className = selected.length > 0 ? 'multi-confirm show' : 'multi-confirm';
     });
     grid.appendChild(btn);
   });
 
-  confirmBtn.addEventListener('click',()=>{
-    answers[q.id]=Array.from(selected).join(', ');
-    step++;
-    while(step<QUESTIONS.length && QUESTIONS[step].condizione && !QUESTIONS[step].condizione(answers)){
-      step++;
-    }
-    step<QUESTIONS.length ? renderQuestion(step) : finish();
+  confirmBtn.addEventListener('click', function() {
+    answers[q.id] = selected.join(', ');
+    advanceStep();
   });
 
   wrap.appendChild(grid);
@@ -572,18 +441,24 @@ function renderMulti(wrap, q, idx){
   wrap.appendChild(confirmBtn);
 }
 
-/* ── FINE ── */
-async function finish(){
-  document.getElementById('questionView').style.display='none';
-  document.getElementById('thanksName').textContent=answers.nome||'';
+function finish() {
+  document.getElementById('questionView').style.display = 'none';
+  document.getElementById('thanksName').textContent = answers.nome || '';
   document.getElementById('thanksView').classList.add('show');
-  try{
-    await fetch(`${SUPABASE_URL}/rest/v1/clienti`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-      body:JSON.stringify({...answers, stato:'nuovo', ai_analizzato:false})
-    });
-  }catch(e){console.error(e);}
+  var payload = {};
+  for (var k in answers) payload[k] = answers[k];
+  payload.stato = 'nuovo';
+  payload.ai_analizzato = false;
+  fetch(SUPABASE_URL + '/rest/v1/clienti', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify(payload)
+  }).catch(function(e){ console.error(e); });
 }
 
 renderNameStep();
